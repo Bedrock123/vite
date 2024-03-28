@@ -1,0 +1,7 @@
+.navButton {
+    
+    &[data-status="active"] {
+        background-color: var(--mantine-color-red-7);
+
+    }
+  }
