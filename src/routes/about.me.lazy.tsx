@@ -1,9 +1,8 @@
-import { Outlet, createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { AreaChart } from "@mantine/charts";
-import NavButton from "../components/NavButton";
 
-export const Route = createLazyFileRoute("/about")({
-  component: About,
+export const Route = createLazyFileRoute("/about/me")({
+  component: AboutMe,
 });
 const data = [
   {
@@ -37,7 +36,7 @@ const data = [
     Tomatoes: 2290,
   },
 ];
-function About() {
+function AboutMe() {
   return (
     <div className="p-2">
       <AreaChart
@@ -51,8 +50,6 @@ function About() {
           { name: "Tomatoes", color: "teal.6" },
         ]}
       />
-      <NavButton to="/about/me">About Me</NavButton>
-      <Outlet />
     </div>
   );
 }

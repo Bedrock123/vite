@@ -1,13 +1,14 @@
 import { Button } from "@mantine/core";
-import { Link } from "@tanstack/react-router";
+import { Link, ParseRoute } from "@tanstack/react-router";
 import classes from "./NavButton.module.css";
+import { routeTree } from "../routeTree.gen";
 
 export default function NavButton({
   children,
   to,
 }: {
   children: React.ReactNode;
-  to: string;
+  to: ParseRoute<typeof routeTree>["fullPath"];
 }) {
   return (
     <Button

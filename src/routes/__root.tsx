@@ -34,6 +34,7 @@ export const Route = createRootRoute({
         <AppShell.Navbar p="md">
           <NavButton to="/">Home</NavButton>
           <NavButton to="/about">About</NavButton>
+          <NavButton to="/invoices">Invoices</NavButton>
         </AppShell.Navbar>
 
         <AppShell.Main>

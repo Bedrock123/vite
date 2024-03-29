@@ -3826,6 +3826,7 @@ __metadata:
     recharts: "npm:2"
     typescript: "npm:^5.4.2"
     vite: "npm:^5.1.6"
+    zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
 
