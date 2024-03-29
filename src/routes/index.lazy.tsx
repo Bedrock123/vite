@@ -25,21 +25,10 @@ function Index() {
   const { search } = Route.useSearch();
 
   const [value, setValue] = useState("");
-  const [debounced] = useDebouncedValue(value, 200);
+  const [debounced] = useDebouncedValue(value, 500);
 
-  supabase
-    .channel("schema-db-changes")
-    .on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-      },
-      () => fetchData()
-    )
-    .subscribe();
   const [targets, setTargets] = useState<any[]>([]);
-  const fetchData = async () => {
+  const fetchData = async (search: string) => {
     const targets = await supabase
       .from("sp_targeting")
       .select(
@@ -52,9 +41,10 @@ function Index() {
       )
       .neq("targeting_keyword", null)
 
-      .textSearch("targeting_keyword", `'${debounced}'`, {
+      .textSearch("targeting_keyword", `'${search}'`, {
         config: "english",
       })
+      .order("spend", { ascending: false })
       .order("date", { ascending: true })
       .limit(200);
 
@@ -62,26 +52,22 @@ function Index() {
       setTargets(targets.data.map((target) => target));
     }
   };
-  useEffect(() => {
-    setValue(search);
-  }, []);
+
   useEffect(() => {
     if (!!debounced && debounced !== "") {
-      fetchData();
+      fetchData(debounced);
     }
   }, [debounced]);
 
   useEffect(() => {
-    navigate({
-      search: (old) => {
-        return {
-          ...old,
-          search: debounced,
-        };
-      },
-      replace: true,
-    });
-  }, [debounced]);
+    if (search !== "") {
+      fetchData(search);
+    }
+  }, []);
+
+  useEffect(() => {
+    setValue(search);
+  }, [search]);
 
   return (
     <div className="p-2">
@@ -89,8 +75,18 @@ function Index() {
       <TextInput
         placeholder="Search"
         mb={30}
-        value={value}
-        onChange={(e) => setValue(e.currentTarget.value)}
+        value={search}
+        onChange={(e) => {
+          navigate({
+            search: (old) => {
+              return {
+                ...old,
+                search: e.currentTarget.value,
+              };
+            },
+            replace: true,
+          });
+        }}
       />
       <Table
         variant=""
