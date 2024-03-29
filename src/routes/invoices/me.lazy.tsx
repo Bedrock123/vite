@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RadarChart } from "@mantine/charts";
+import { Camera } from "lucide-react";
 
 import { z } from "zod";
 import { TextInput } from "@mantine/core";
@@ -67,6 +68,10 @@ function Invoices() {
             replace: true,
           });
         }}
+      />
+      <Camera
+        color="red"
+        size={48}
       />
       <RadarChart
         h={300}
