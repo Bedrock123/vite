@@ -13,6 +13,7 @@
     "@mantine/charts": "^7.7.0",
     "@mantine/core": "7.6.1",
     "@mantine/hooks": "7.6.1",
+    "@supabase/supabase-js": "^2.41.1",
     "@tanstack/react-router": "^1.24.0",
     "@tanstack/router-devtools": "^1.24.0",
     "@tanstack/router-vite-plugin": "^1.23.0",
