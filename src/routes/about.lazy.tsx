@@ -1,56 +1,55 @@
 import { Outlet, createLazyFileRoute } from "@tanstack/react-router";
-import { AreaChart } from "@mantine/charts";
 import NavButton from "../components/NavButton";
+import { Area } from "@ant-design/plots";
+import { Box } from "@mantine/core";
 
 export const Route = createLazyFileRoute("/about")({
   component: About,
 });
-const data = [
-  {
-    date: "Mar 22",
-    Apples: 2890,
-    Oranges: 2338,
-    Tomatoes: 2452,
-  },
-  {
-    date: "Mar 23",
-    Apples: 2756,
-    Oranges: 2103,
-    Tomatoes: 2402,
-  },
-  {
-    date: "Mar 24",
-    Apples: 3322,
-    Oranges: 986,
-    Tomatoes: 1821,
-  },
-  {
-    date: "Mar 25",
-    Apples: 3470,
-    Oranges: 2108,
-    Tomatoes: 2809,
-  },
-  {
-    date: "Mar 26",
-    Apples: 3129,
-    Oranges: 1726,
-    Tomatoes: 2290,
-  },
-];
+
 function About() {
+  const config = {
+    data: {
+      type: "fetch",
+      value:
+        "https://assets.antv.antgroup.com/g2/unemployment-by-industry.json",
+    },
+    xField: (d: { date: Date }) => new Date(d.date),
+    yField: "unemployed",
+    colorField: "industry",
+    shapeField: "smooth",
+    stack: true, // Try to remove this line.
+    theme: "academy",
+    legend: {
+      color: {
+        layout: {
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        },
+      },
+    },
+    slider: {
+      x: {},
+    },
+    interaction: {
+      tooltip: {
+        showCrosshairs: true,
+        trailing: true,
+        position: "bottom-left",
+        css: {
+          boxShadow: "none",
+          fontFamily: "sans-serif",
+        },
+      },
+    },
+  };
+
   return (
     <div className="p-2">
-      <AreaChart
-        h={300}
-        data={data}
-        dataKey="date"
-        type="stacked"
-        series={[
-          { name: "Apples", color: "indigo.6" },
-          { name: "Oranges", color: "blue.6" },
-          { name: "Tomatoes", color: "teal.6" },
-        ]}
-      />
+      <Box h={700}>
+        <Area {...config} />
+      </Box>
       <NavButton to="/about/me">About Me</NavButton>
       <Outlet />
     </div>
