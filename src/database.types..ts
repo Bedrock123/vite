@@ -4,46 +4,139 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
-      keywords: {
+      catalog: {
         Row: {
-          created_at: string
-          id: number
-          name: string | null
-        }
+          asin: string;
+          msrp: number | null;
+          name: string | null;
+          pack_size: number | null;
+          parent_category: string | null;
+          product_category: string | null;
+          scent: string | null;
+          upc: string | null;
+          vendor_sku: string | null;
+        };
         Insert: {
-          created_at?: string
-          id?: number
-          name?: string | null
-        }
+          asin: string;
+          msrp?: number | null;
+          name?: string | null;
+          pack_size?: number | null;
+          parent_category?: string | null;
+          product_category?: string | null;
+          scent?: string | null;
+          upc?: string | null;
+          vendor_sku?: string | null;
+        };
         Update: {
-          created_at?: string
-          id?: number
-          name?: string | null
-        }
-        Relationships: []
-      }
-    }
+          asin?: string;
+          msrp?: number | null;
+          name?: string | null;
+          pack_size?: number | null;
+          parent_category?: string | null;
+          product_category?: string | null;
+          scent?: string | null;
+          upc?: string | null;
+          vendor_sku?: string | null;
+        };
+        Relationships: [];
+      };
+      sp_targeting: {
+        Row: {
+          ad_group_name: string | null;
+          advertising_cost_of_sales: number | null;
+          campaign_name: string | null;
+          click_through_rate: number | null;
+          clicks: number | null;
+          conversion_rate: number | null;
+          cost_per_click: number | null;
+          created_at: string;
+          date: string | null;
+          id: number;
+          impressions: number | null;
+          match_type: string | null;
+          portfolio_name: string | null;
+          return_on_advertising_spend: number | null;
+          spend: number | null;
+          targeting_asin: string | null;
+          targeting_keyword: string | null;
+          targeting_raw: string | null;
+          top_of_search_impression_share: number | null;
+          total_orders: number | null;
+          total_sales: number | null;
+          total_units: number | null;
+        };
+        Insert: {
+          ad_group_name?: string | null;
+          advertising_cost_of_sales?: number | null;
+          campaign_name?: string | null;
+          click_through_rate?: number | null;
+          clicks?: number | null;
+          conversion_rate?: number | null;
+          cost_per_click?: number | null;
+          created_at?: string;
+          date?: string | null;
+          id?: number;
+          impressions?: number | null;
+          match_type?: string | null;
+          portfolio_name?: string | null;
+          return_on_advertising_spend?: number | null;
+          spend?: number | null;
+          targeting_asin?: string | null;
+          targeting_keyword?: string | null;
+          targeting_raw?: string | null;
+          top_of_search_impression_share?: number | null;
+          total_orders?: number | null;
+          total_sales?: number | null;
+          total_units?: number | null;
+        };
+        Update: {
+          ad_group_name?: string | null;
+          advertising_cost_of_sales?: number | null;
+          campaign_name?: string | null;
+          click_through_rate?: number | null;
+          clicks?: number | null;
+          conversion_rate?: number | null;
+          cost_per_click?: number | null;
+          created_at?: string;
+          date?: string | null;
+          id?: number;
+          impressions?: number | null;
+          match_type?: string | null;
+          portfolio_name?: string | null;
+          return_on_advertising_spend?: number | null;
+          spend?: number | null;
+          targeting_asin?: string | null;
+          targeting_keyword?: string | null;
+          targeting_raw?: string | null;
+          top_of_search_impression_share?: number | null;
+          total_orders?: number | null;
+          total_sales?: number | null;
+          total_units?: number | null;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -56,7 +149,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -64,11 +157,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -79,17 +172,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -100,17 +193,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -123,4 +216,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+    : never;

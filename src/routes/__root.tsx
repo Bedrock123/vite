@@ -23,7 +23,7 @@ export const Route = createRootRoute({
         navbar={{
           width: 300,
           breakpoint: "sm",
-          collapsed: { mobile: false },
+          collapsed: { mobile: true },
         }}
         padding="md"
       >
