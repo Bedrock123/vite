@@ -2,7 +2,6 @@ import { Outlet, createLazyFileRoute } from "@tanstack/react-router";
 import NavButton from "../components/NavButton";
 import { Area } from "@ant-design/plots";
 import { Box, Grid } from "@mantine/core";
-import { Sankey } from "@ant-design/plots";
 import { Column } from "@ant-design/plots";
 
 export const Route = createLazyFileRoute("/about")({
