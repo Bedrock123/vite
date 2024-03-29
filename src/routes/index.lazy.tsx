@@ -1,9 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Line } from "@ant-design/plots";
 
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Database } from "../database.types.";
-import { Table, TextInput } from "@mantine/core";
+import { Box, Table, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { z } from "zod";
 const searchSchema = z.object({
@@ -40,13 +41,10 @@ function Index() {
         `
       )
       .neq("targeting_keyword", null)
+      .eq("targeting_keyword", search)
 
-      .textSearch("targeting_keyword", `'${search}'`, {
-        config: "english",
-      })
-      .order("spend", { ascending: false })
       .order("date", { ascending: true })
-      .limit(200);
+      .limit(250);
 
     if (!!targets?.data) {
       setTargets(targets.data.map((target) => target));
@@ -69,6 +67,57 @@ function Index() {
     setValue(search);
   }, [search]);
 
+  const createValues = () => {
+    if (targets.length > 0) {
+      // Object to hold the sum of spend for each date
+      let sumsByDate = {} as any;
+
+      // Iterate over each target to group by date and sum the spend
+      targets.forEach((target) => {
+        const { date, spend } = target;
+
+        // If the date already exists in the sumsByDate object, add to the sum. Otherwise, initialize it.
+        if (sumsByDate[date]) {
+          sumsByDate[date] += spend;
+        } else {
+          sumsByDate[date] = spend;
+        }
+      });
+
+      // Convert the sumsByDate object back into an array of objects
+      let targetChart = Object.entries(sumsByDate).map(([date, spend]) => ({
+        date,
+        spend,
+        // The targeting_keyword is not included here because the function sums spend by date regardless of the keyword.
+        // If you need to include targeting_keyword, you'd have to adjust the grouping logic to account for it as well.
+      }));
+
+      return targetChart;
+    }
+    return [];
+  };
+
+  const config = {
+    data: createValues(),
+    xField: (d: { date: Date }) => new Date(d.date),
+    yField: "spend",
+    colorField: "targeting_keyword",
+    shapeField: "smooth",
+    stack: true, // Try to remove this line.
+    theme: "academy",
+    axis: {
+      x: {
+        title: "Date",
+        labelAutoHide: false,
+      },
+      y: {
+        title: "Spend",
+      },
+    },
+    interaction: {
+      tooltip: true,
+    },
+  };
   return (
     <div className="p-2">
       <h3>Welcome Home!</h3>
@@ -88,6 +137,10 @@ function Index() {
           });
         }}
       />
+      <Box h={400}>
+        <Line {...config} />
+      </Box>
+
       <Table
         variant=""
         stickyHeader
