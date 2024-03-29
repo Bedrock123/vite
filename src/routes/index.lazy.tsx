@@ -23,16 +23,20 @@ function Index() {
         event: "*",
         schema: "public",
       },
-      (payload) => console.log(payload)
+      () => fetchData()
     )
     .subscribe();
   const [keywords, setKeywords] = useState<any[]>([]);
   const fetchData = async () => {
-    const keywords = await supabase.from("keywords").select(
-      `
+    const keywords = await supabase
+      .from("keywords")
+      .select(
+        `
+        
         name
         `
-    );
+      )
+      .order("id", { ascending: true });
     if (!!keywords?.data) {
       setKeywords(keywords.data.map((keyword) => keyword.name));
     }

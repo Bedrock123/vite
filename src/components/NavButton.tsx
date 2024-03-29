@@ -14,6 +14,7 @@ export default function NavButton({
     <Button
       component={Link}
       to={to}
+      preload="intent"
       className={classes.navButton}
     >
       {children}
