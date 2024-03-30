@@ -4,7 +4,7 @@ import { Line } from "@ant-design/plots";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Database } from "../database.types.";
-import { Box, Table, TextInput } from "@mantine/core";
+import { Box, Button, Table, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { z } from "zod";
 const searchSchema = z.object({
@@ -102,7 +102,7 @@ function Index() {
     xField: (d: { date: Date }) => new Date(d.date),
     yField: "spend",
     colorField: "targeting_keyword",
-    shapeField: "smooth",
+
     stack: true, // Try to remove this line.
     theme: "academy",
     axis: {
@@ -118,8 +118,22 @@ function Index() {
       tooltip: true,
     },
   };
+  const getImage = async () => {
+    const image = await supabase.functions.invoke("hello-world", {
+      body: { name: "Functions" },
+    });
+    console.log(image);
+  };
   return (
     <div className="p-2">
+      <Button
+        onClick={getImage}
+        variant="outline"
+        color="blue"
+        size="lg"
+      >
+        IMAGE
+      </Button>
       <h3>Welcome Home!</h3>
       <TextInput
         placeholder="Search"
